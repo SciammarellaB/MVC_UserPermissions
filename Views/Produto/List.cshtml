@@ -1,0 +1,46 @@
+﻿@model IEnumerable<MVC_UserPermissions.Models.Produto>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                <span>#</span>
+            </th>
+            <th>
+                <span>Nome</span>
+            </th>
+            <th>
+                <span>Categoria</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+                <td>
+                    <span>@item.Id</span>
+                </td>
+                <td>
+                    <span>@item.Nome</span>
+                </td>
+                <td>
+                    <span>@item.Categoria.Nome</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
