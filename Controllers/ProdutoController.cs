@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_UserPermissions.Context;
+using MVC_UserPermissions.Enumerados;
 using MVC_UserPermissions.Models;
 using static MVC_UserPermissions.Provider.UserPermissionsProvider;
 
@@ -18,7 +18,7 @@ public class ProdutoController : Controller
         _query = _context.Set<Produto>();
     }
 
-    [CustomAuthorize("10001000")]
+    [CustomAuthorize(Permissoes.Listar_Produto)]
     public IActionResult List()
     {
         var query = _query.Include(x => x.Categoria);
@@ -26,7 +26,7 @@ public class ProdutoController : Controller
         return View(query);
     }
 
-    [CustomAuthorize("10002000")]
+    [CustomAuthorize(Permissoes.Cadastrar_Produto)]
     public IActionResult Create()
     {
         var produto = new Produto();
@@ -34,6 +34,7 @@ public class ProdutoController : Controller
         return View(produto);
     }
 
+    [CustomAuthorize(Permissoes.Editar_Produto)]
     public IActionResult Edit(long id)
     {
         var produto = _query.SingleOrDefault(x => x.Id == id);
@@ -66,6 +67,7 @@ public class ProdutoController : Controller
         return RedirectToAction("List");
     }
 
+    [CustomAuthorize(Permissoes.Excluir_Produto)]
     public ActionResult Delete(long id)
     {
         var item = _query.SingleOrDefault(x => x.Id == id);

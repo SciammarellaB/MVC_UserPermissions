@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Filters;
+using MVC_UserPermissions.Enumerados;
+using System.Web.Mvc;
 
 namespace MVC_UserPermissions.Provider;
 
@@ -10,14 +11,19 @@ public class UserPermissionsProvider
 
     }
 
-    public class CustomAuthorize : AuthorizeAttribute
+    public class CustomAuthorize : FilterAttribute, IAuthorizationFilter
     {
-        private readonly string _key;
+        new List<int> _teste = new List<int>();
 
-
-        public CustomAuthorize(string key)
+        public CustomAuthorize(params Permissoes[] permission)
         {
-            _key = key;
+            permission.ToList().ForEach(x => _teste.Add((int)x));
+        }
+
+
+        public void OnAuthorization(AuthorizationContext filterContext)
+        {
+            throw new NotImplementedException();
         }
     }
 }

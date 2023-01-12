@@ -6,7 +6,6 @@ namespace MVC_UserPermissions.Models;
 public class PermissaoUsuario
 {
     public long Id { get; set; }
-    //usuarioId
+    //usuario
     public long PermissaoId { get; set; }
-    public Permissao? Permissao { get; private set; }
 }

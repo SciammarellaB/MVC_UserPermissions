@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC_UserPermissions.Migrations
 {
     [DbContext(typeof(UserPermissionsContext))]
-    [Migration("20230111000113_Inicial")]
+    [Migration("20230112012617_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,22 @@ namespace MVC_UserPermissions.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CategoriaProduto");
+                });
+
+            modelBuilder.Entity("MVC_UserPermissions.Models.PermissaoUsuario", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long>("PermissaoId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissao_Usuario");
                 });
 
             modelBuilder.Entity("MVC_UserPermissions.Models.Produto", b =>

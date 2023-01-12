@@ -22,6 +22,19 @@ namespace MVC_UserPermissions.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Permissao_Usuario",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PermissaoId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissao_Usuario", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Produto",
                 columns: table => new
                 {
@@ -49,6 +62,9 @@ namespace MVC_UserPermissions.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Permissao_Usuario");
+
             migrationBuilder.DropTable(
                 name: "Produto");
 

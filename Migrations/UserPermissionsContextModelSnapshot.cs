@@ -38,75 +38,6 @@ namespace MVC_UserPermissions.Migrations
                     b.ToTable("CategoriaProduto");
                 });
 
-            modelBuilder.Entity("MVC_UserPermissions.Models.Permissao", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permissao");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Key = "10001000",
-                            Nome = "Listar Produto"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Key = "10002000",
-                            Nome = "Criar Produto"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Key = "10003000",
-                            Nome = "Editar Produto"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Key = "10004000",
-                            Nome = "Deletar Produto"
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            Key = "20001000",
-                            Nome = "Listar Categoria Produto"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Key = "20002000",
-                            Nome = "Criar Categoria Produto"
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Key = "20003000",
-                            Nome = "Editar Categoria Produto"
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            Key = "20004000",
-                            Nome = "Deletar Categoria Produto"
-                        });
-                });
-
             modelBuilder.Entity("MVC_UserPermissions.Models.PermissaoUsuario", b =>
                 {
                     b.Property<long>("Id")
@@ -119,8 +50,6 @@ namespace MVC_UserPermissions.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PermissaoId");
 
                     b.ToTable("Permissao_Usuario");
                 });
@@ -145,17 +74,6 @@ namespace MVC_UserPermissions.Migrations
                     b.HasIndex("CategoriaId");
 
                     b.ToTable("Produto");
-                });
-
-            modelBuilder.Entity("MVC_UserPermissions.Models.PermissaoUsuario", b =>
-                {
-                    b.HasOne("MVC_UserPermissions.Models.Permissao", "Permissao")
-                        .WithMany()
-                        .HasForeignKey("PermissaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Permissao");
                 });
 
             modelBuilder.Entity("MVC_UserPermissions.Models.Produto", b =>

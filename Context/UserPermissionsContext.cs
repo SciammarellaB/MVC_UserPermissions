@@ -16,7 +16,6 @@ public class UserPermissionsContext : DbContext
     }
     
     public DbSet<Produto> Produtos { get; set; }
-    public DbSet<CategoriaProduto> CategoriaProdutos { get; set; }
-    public DbSet<Permissao> Permissoes { get; set; }
+    public DbSet<CategoriaProduto> CategoriaProdutos { get; set; }    
     public DbSet<PermissaoUsuario> PermissaoUsuarios { get; set; }
 }
