@@ -14,6 +14,7 @@ public enum Permissoes
     [Display(GroupName = "Categoria Produto", Name = "Excluir", Description = "Concede acesso")]
     Excluir_Categoria_Produto = 100004,
     #endregion
+
     #region PRODUTO
     [Display(GroupName = "Produto", Name = "Listar", Description = "Concede acesso")]
     Listar_Produto = 200001,

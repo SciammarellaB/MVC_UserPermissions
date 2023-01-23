@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_UserPermissions.Context;
+using MVC_UserPermissions.Enumerados;
+using MVC_UserPermissions.Filter;
 using MVC_UserPermissions.Models;
 
 namespace MVC_UserPermissions.Controllers;
 
 public class CategoriaProdutoController : Controller
 {
-    protected readonly UserPermissionsContext _context;
+    readonly UserPermissionsContext _context;
     protected IQueryable<CategoriaProduto> _query;
 
     public CategoriaProdutoController(UserPermissionsContext context)
@@ -15,6 +17,7 @@ public class CategoriaProdutoController : Controller
         _query = _context.Set<CategoriaProduto>();
     }
 
+    [CustomAuthorize(Permissoes.Listar_Categoria_Produto)]
     public IActionResult List()
     {
         var query = _query;
@@ -22,6 +25,7 @@ public class CategoriaProdutoController : Controller
         return View(query);
     }
 
+    [CustomAuthorize(Permissoes.Cadastrar_Categoria_Produto)]
     public IActionResult Create()
     {
         var produto = new CategoriaProduto();
@@ -29,6 +33,7 @@ public class CategoriaProdutoController : Controller
         return View(produto);
     }
 
+    [CustomAuthorize(Permissoes.Editar_Categoria_Produto)]
     public IActionResult Edit(long id)
     {
         var categoria = _query.SingleOrDefault(x => x.Id == id);
@@ -60,6 +65,7 @@ public class CategoriaProdutoController : Controller
         return RedirectToAction("List");
     }
 
+    [CustomAuthorize(Permissoes.Excluir_Categoria_Produto)]
     public ActionResult Delete(long id)
     {
         var item = _query.SingleOrDefault(x => x.Id == id);

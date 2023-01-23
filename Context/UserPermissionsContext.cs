@@ -12,7 +12,7 @@ public class UserPermissionsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Seed();
+        modelBuilder.Seed();        
     }
     
     public DbSet<Produto> Produtos { get; set; }

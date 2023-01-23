@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using MVC_UserPermissions.Context;
 using MVC_UserPermissions.Enumerados;
+using MVC_UserPermissions.Filter;
 using MVC_UserPermissions.Models;
-using static MVC_UserPermissions.Provider.UserPermissionsProvider;
 
 namespace MVC_UserPermissions.Controllers;
 
