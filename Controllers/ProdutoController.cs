@@ -10,7 +10,7 @@ namespace MVC_UserPermissions.Controllers;
 public class ProdutoController : Controller
 {
     protected readonly UserPermissionsContext _context;
-    protected IQueryable<Produto> _query;
+    protected IQueryable<Produto> _query;    
 
     public ProdutoController(UserPermissionsContext context)
     {
@@ -21,6 +21,13 @@ public class ProdutoController : Controller
     [CustomAuthorize(Permissoes.Listar_Produto)]
     public IActionResult List()
     {
+        ViewBag.Permissions = new
+        {
+            Criar = _context._permissoes.Any(x => x == (int) Permissoes.Cadastrar_Produto),
+            Editar = _context._permissoes.Any(x => x == (int) Permissoes.Editar_Produto),
+            Excluir = _context._permissoes.Any(x => x == (int) Permissoes.Excluir_Produto)
+        };
+
         var query = _query.Include(x => x.Categoria);
 
         return View(query);

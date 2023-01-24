@@ -7,7 +7,10 @@
 <h1>List</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @if (ViewBag.Permissions.Criar)
+    {
+        <a asp-action="Create">Create New</a>
+    }
 </p>
 <table class="table">
     <thead>
@@ -23,11 +26,17 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
+            <tr>
+                <td>
+                    @if (ViewBag.Permissions.Editar)
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    }
+                    @if (ViewBag.Permissions.Excluir)
+                    {
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    }
+                </td>
             <td>
                 <span>@item.Id</span>
             </td>

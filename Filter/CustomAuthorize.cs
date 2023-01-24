@@ -9,7 +9,7 @@ namespace MVC_UserPermissions.Filter;
 public class CustomAuthorize : ActionFilterAttribute
 {
     protected readonly UserPermissionsContext _context;
-    new List<int> _permissoes = new List<int>();
+    new List<int> _permissoes = new List<int>();       
 
     public CustomAuthorize(params Permissoes[] permission)
     {
@@ -18,7 +18,6 @@ public class CustomAuthorize : ActionFilterAttribute
 
     public override void OnActionExecuting(ActionExecutingContext filterContext)
     {
-
         var permissoes = new List<int>
         {
             //LISTAR CATEGORIA PRODUTO
@@ -29,7 +28,6 @@ public class CustomAuthorize : ActionFilterAttribute
             200001,
             //CADASTRAR PRODUTO
             200002
-
         };
 
         if (!_permissoes.Any(x => permissoes.Contains(x)))

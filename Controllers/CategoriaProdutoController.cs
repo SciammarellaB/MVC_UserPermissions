@@ -20,6 +20,13 @@ public class CategoriaProdutoController : Controller
     [CustomAuthorize(Permissoes.Listar_Categoria_Produto)]
     public IActionResult List()
     {
+        ViewBag.Permissions = new
+        {
+            Criar = _context._permissoes.Any(x => x == (int)Permissoes.Cadastrar_Categoria_Produto),
+            Editar = _context._permissoes.Any(x => x == (int)Permissoes.Editar_Categoria_Produto),
+            Excluir = _context._permissoes.Any(x => x == (int)Permissoes.Excluir_Categoria_Produto)
+        };
+
         var query = _query;
 
         return View(query);

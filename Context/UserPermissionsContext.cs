@@ -5,6 +5,20 @@ namespace MVC_UserPermissions.Context;
 
 public class UserPermissionsContext : DbContext
 {
+    public List<int> _permissoes = new List<int>
+    {
+        //LISTAR CATEGORIA PRODUTO
+        100001,
+        //CADASTRAR CATEGORIA PRODUTO
+        100002,
+        //EXCLUIR CATEGORIA PRODUTO
+        100004,
+        //LISTAR PRODUTO
+        200001,
+        //CADASTRAR PRODUTO
+        200002
+    };
+
     public UserPermissionsContext(DbContextOptions<UserPermissionsContext> options) : base(options)
     {
 
