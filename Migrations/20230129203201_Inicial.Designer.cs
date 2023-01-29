@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC_UserPermissions.Migrations
 {
     [DbContext(typeof(UserPermissionsContext))]
-    [Migration("20230121182006_alteracaoLongIntPermissao")]
-    partial class alteracaoLongIntPermissao
+    [Migration("20230129203201_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,8 +48,8 @@ namespace MVC_UserPermissions.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<int>("PermissaoId")
-                        .HasColumnType("int");
+                    b.Property<long>("PermissaoId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

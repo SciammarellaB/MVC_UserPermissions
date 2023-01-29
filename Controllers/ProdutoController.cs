@@ -1,31 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hanssens.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using MVC_UserPermissions.Context;
 using MVC_UserPermissions.Enumerados;
 using MVC_UserPermissions.Filter;
 using MVC_UserPermissions.Models;
+using System.Web;
 
 namespace MVC_UserPermissions.Controllers;
 
 public class ProdutoController : Controller
 {
     protected readonly UserPermissionsContext _context;
-    protected IQueryable<Produto> _query;    
+    protected IQueryable<Produto> _query;
+
+    public List<long> _permissoes;
 
     public ProdutoController(UserPermissionsContext context)
     {
         _context = context;
         _query = _context.Set<Produto>();
+
+        _permissoes = new LocalStorage().Get("permissoes").ToString().Split(",").Select(x => long.Parse(x)).ToList();
     }
 
-    [CustomAuthorize(Permissoes.Listar_Produto)]
+    [CustomAuthorize(Permissoes.Produto_Listar)]
     public IActionResult List()
     {
         ViewBag.Permissions = new
         {
-            Criar = _context._permissoes.Any(x => x == (int) Permissoes.Cadastrar_Produto),
-            Editar = _context._permissoes.Any(x => x == (int) Permissoes.Editar_Produto),
-            Excluir = _context._permissoes.Any(x => x == (int) Permissoes.Excluir_Produto)
+            Criar = _permissoes.Any(x => x == (long) Permissoes.Produto_Cadastrar),
+            Editar = _permissoes.Any(x => x == (int) Permissoes.Produto_Editar),
+            Excluir = _permissoes.Any(x => x == (int) Permissoes.Produto_Excluir)
         };
 
         var query = _query.Include(x => x.Categoria);
@@ -33,20 +40,23 @@ public class ProdutoController : Controller
         return View(query);
     }
 
-    [CustomAuthorize(Permissoes.Cadastrar_Produto)]
-    public IActionResult Create()
+    [CustomAuthorize(Permissoes.Produto_Cadastrar)]
+    public IActionResult Create(Produto? produto)
     {
-        var produto = new Produto();
+        if (produto.Id == 0)
+        {
+            produto = new Produto();
+        }
 
         return View(produto);
     }
 
-    [CustomAuthorize(Permissoes.Editar_Produto)]
+    [CustomAuthorize(Permissoes.Produto_Editar)]
     public IActionResult Edit(long id)
     {
         var produto = _query.SingleOrDefault(x => x.Id == id);
 
-        return RedirectToAction("Create", "Create", produto);
+        return RedirectToAction("Create", "Produto", produto);
     }
 
     public ActionResult Save(Produto model)
@@ -74,7 +84,7 @@ public class ProdutoController : Controller
         return RedirectToAction("List");
     }
 
-    [CustomAuthorize(Permissoes.Excluir_Produto)]
+    [CustomAuthorize(Permissoes.Produto_Excluir)]
     public ActionResult Delete(long id)
     {
         var item = _query.SingleOrDefault(x => x.Id == id);

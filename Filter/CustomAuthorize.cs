@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hanssens.Net;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MVC_UserPermissions.Context;
 using MVC_UserPermissions.Controllers.Shared;
@@ -6,10 +7,10 @@ using MVC_UserPermissions.Enumerados;
 
 namespace MVC_UserPermissions.Filter;
 
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 public class CustomAuthorize : ActionFilterAttribute
 {
-    protected readonly UserPermissionsContext _context;
-    new List<int> _permissoes = new List<int>();       
+    new List<int> _permissoes = new List<int>();
 
     public CustomAuthorize(params Permissoes[] permission)
     {
@@ -18,26 +19,15 @@ public class CustomAuthorize : ActionFilterAttribute
 
     public override void OnActionExecuting(ActionExecutingContext filterContext)
     {
-        var permissoes = new List<int>
-        {
-            //LISTAR CATEGORIA PRODUTO
-            100001,
-            //EXCLUIR CATEGORIA PRODUTO
-            100004,
-            //LISTAR PRODUTO
-            200001,
-            //CADASTRAR PRODUTO
-            200002
-        };
+        var localStorage = new LocalStorage();        
+        var permissoes = localStorage.Get("permissoes").ToString().Split(",").Select(x => long.Parse(x)).ToList();
 
         if (!_permissoes.Any(x => permissoes.Contains(x)))
         {
             var controller = filterContext.RouteData.Values["Controller"];
 
             filterContext.HttpContext.Response.StatusCode = 403;
-            filterContext.Result = new RedirectToActionResult("Index", "Unauthrized", new { Values = controller });
-
-            //filterContext.Result = new UnauthorizedObjectResult("Você não tem permissão para essa função!");
+            filterContext.Result = new RedirectResult("/Unauthrized/Index");
         }
         base.OnActionExecuting(filterContext);
     }

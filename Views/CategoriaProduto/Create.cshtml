@@ -4,7 +4,14 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+@if(Model.Id > 0)
+{
+    <h1>Edit</h1>    
+}
+else
+{
+    <h1>Create</h1>
+}
 
 <h4>CategoriaProduto</h4>
 <hr />

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hanssens.Net;
+using Microsoft.AspNetCore.Mvc;
 using MVC_UserPermissions.Context;
 using MVC_UserPermissions.Enumerados;
 using MVC_UserPermissions.Filter;
@@ -11,20 +12,24 @@ public class CategoriaProdutoController : Controller
     readonly UserPermissionsContext _context;
     protected IQueryable<CategoriaProduto> _query;
 
+    public List<long> _permissoes;
+
     public CategoriaProdutoController(UserPermissionsContext context)
     {
         _context = context;
         _query = _context.Set<CategoriaProduto>();
+
+        _permissoes = new LocalStorage().Get("permissoes").ToString().Split(",").Select(x => long.Parse(x)).ToList();
     }
 
-    [CustomAuthorize(Permissoes.Listar_Categoria_Produto)]
+    [CustomAuthorize(Permissoes.Categoria_Produto_Listar)]
     public IActionResult List()
     {
         ViewBag.Permissions = new
         {
-            Criar = _context._permissoes.Any(x => x == (int)Permissoes.Cadastrar_Categoria_Produto),
-            Editar = _context._permissoes.Any(x => x == (int)Permissoes.Editar_Categoria_Produto),
-            Excluir = _context._permissoes.Any(x => x == (int)Permissoes.Excluir_Categoria_Produto)
+            Criar = _permissoes.Any(x => x == (int)Permissoes.Categoria_Produto_Cadastrar),
+            Editar = _permissoes.Any(x => x == (int)Permissoes.Categoria_Produto_Editar),
+            Excluir = _permissoes.Any(x => x == (int)Permissoes.Categoria_Produto_Excluir)
         };
 
         var query = _query;
@@ -32,20 +37,23 @@ public class CategoriaProdutoController : Controller
         return View(query);
     }
 
-    [CustomAuthorize(Permissoes.Cadastrar_Categoria_Produto)]
-    public IActionResult Create()
+    [CustomAuthorize(Permissoes.Categoria_Produto_Cadastrar)]
+    public IActionResult Create(CategoriaProduto? categoriaProduto)
     {
-        var produto = new CategoriaProduto();
+        if(categoriaProduto.Id == 0)
+        {
+            categoriaProduto = new CategoriaProduto();
+        }
 
-        return View(produto);
+        return View(categoriaProduto);
     }
 
-    [CustomAuthorize(Permissoes.Editar_Categoria_Produto)]
+    [CustomAuthorize(Permissoes.Categoria_Produto_Editar)]
     public IActionResult Edit(long id)
     {
         var categoria = _query.SingleOrDefault(x => x.Id == id);
 
-        return RedirectToAction("Create", "CategoriaProduto", new CategoriaProduto(categoria.Id, categoria.Nome));
+        return RedirectToAction("Create", "CategoriaProduto", categoria);
     }
 
     public ActionResult Save(CategoriaProduto model)
@@ -72,7 +80,7 @@ public class CategoriaProdutoController : Controller
         return RedirectToAction("List");
     }
 
-    [CustomAuthorize(Permissoes.Excluir_Categoria_Produto)]
+    [CustomAuthorize(Permissoes.Categoria_Produto_Excluir)]
     public ActionResult Delete(long id)
     {
         var item = _query.SingleOrDefault(x => x.Id == id);

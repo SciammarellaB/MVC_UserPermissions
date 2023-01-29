@@ -7,5 +7,15 @@ public class PermissaoUsuario
 {
     public long Id { get; set; }
     //usuario
-    public int PermissaoId { get; set; }
+    public long PermissaoId { get; set; }
+
+    public PermissaoUsuario()
+    {
+
+    }
+
+    public PermissaoUsuario(long permissaoId)
+    {
+        PermissaoId = permissaoId;
+    }
 }

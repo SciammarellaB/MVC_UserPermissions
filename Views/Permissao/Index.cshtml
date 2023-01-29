@@ -1,0 +1,31 @@
+﻿@model IList<MVC_UserPermissions.Controllers.PermissaoController.Funcionalidade_Model>
+
+@{
+    ViewData["Title"] = "Permissões";
+}
+
+@foreach (var permissao_grupo in Model)
+{
+    <div style="margin: 5px 0px 5px 0px; border: 1px solid black; padding: 5px">
+        <h4 style="">@permissao_grupo.Nome</h4>
+        <div class="row" style="padding: 0px 10px 10px 10px">
+        @foreach (var permissao in permissao_grupo.Children)
+        {
+            <div class="col-6 col-sm-2">
+                    <input type="checkbox" checked="@permissao.Ativo" onclick="atribuir(@permissao.FuncionalidadeId)" />
+                <span>@permissao.Nome</span>
+            </div>
+        }
+        </div>
+    </div>
+}
+
+@section Scripts {
+<script>
+    function atribuir(funcId){
+        var link = '@Url.Action("Atribuir", new { funcionalidadeId = "v-funcId"})';
+        link = link.replace('v-funcId', funcId);
+        window.location = link;
+    }
+</script>
+}

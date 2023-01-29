@@ -46,8 +46,8 @@ namespace MVC_UserPermissions.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<int>("PermissaoId")
-                        .HasColumnType("int");
+                    b.Property<long>("PermissaoId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

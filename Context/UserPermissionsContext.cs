@@ -1,27 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hanssens.Net;
+using Microsoft.EntityFrameworkCore;
 using MVC_UserPermissions.Models;
 
 namespace MVC_UserPermissions.Context;
 
 public class UserPermissionsContext : DbContext
 {
-    public List<int> _permissoes = new List<int>
-    {
-        //LISTAR CATEGORIA PRODUTO
-        100001,
-        //CADASTRAR CATEGORIA PRODUTO
-        100002,
-        //EXCLUIR CATEGORIA PRODUTO
-        100004,
-        //LISTAR PRODUTO
-        200001,
-        //CADASTRAR PRODUTO
-        200002
-    };
-
+    public List<long> _permissoes;
+    
     public UserPermissionsContext(DbContextOptions<UserPermissionsContext> options) : base(options)
     {
+        _permissoes = PermissaoUsuarios.Select(x => x.PermissaoId).ToList();
 
+        var localStorage = new LocalStorage();
+        localStorage.Clear();        
+        localStorage.Store("permissoes", String.Join(", ", _permissoes));
+        localStorage.Persist();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
