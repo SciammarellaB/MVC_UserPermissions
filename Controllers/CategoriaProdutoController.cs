@@ -19,7 +19,9 @@ public class CategoriaProdutoController : Controller
         _context = context;
         _query = _context.Set<CategoriaProduto>();
 
-        _permissoes = new LocalStorage().Get("permissoes").ToString().Split(",").Select(x => long.Parse(x)).ToList();
+        var permissoesStr = new LocalStorage().Get("permissoes").ToString();
+        if (permissoesStr.Length > 0)
+            _permissoes = permissoesStr.Split(",").Select(x => long.Parse(x)).ToList();
     }
 
     [CustomAuthorize(Permissoes.Categoria_Produto_Listar)]

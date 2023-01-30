@@ -6,7 +6,6 @@ using MVC_UserPermissions.Context;
 using MVC_UserPermissions.Enumerados;
 using MVC_UserPermissions.Filter;
 using MVC_UserPermissions.Models;
-using System.Web;
 
 namespace MVC_UserPermissions.Controllers;
 
@@ -22,7 +21,9 @@ public class ProdutoController : Controller
         _context = context;
         _query = _context.Set<Produto>();
 
-        _permissoes = new LocalStorage().Get("permissoes").ToString().Split(",").Select(x => long.Parse(x)).ToList();
+        var permissoesStr = new LocalStorage().Get("permissoes").ToString();
+        if(permissoesStr.Length > 0)
+            _permissoes = permissoesStr.Split(",").Select(x => long.Parse(x)).ToList();
     }
 
     [CustomAuthorize(Permissoes.Produto_Listar)]

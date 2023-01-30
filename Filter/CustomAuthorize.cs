@@ -19,8 +19,11 @@ public class CustomAuthorize : ActionFilterAttribute
 
     public override void OnActionExecuting(ActionExecutingContext filterContext)
     {
-        var localStorage = new LocalStorage();        
-        var permissoes = localStorage.Get("permissoes").ToString().Split(",").Select(x => long.Parse(x)).ToList();
+        var permissoesStr = new LocalStorage().Get("permissoes").ToString();
+        var permissoes = new List<long>();
+
+        if (permissoesStr.Length > 0)
+            permissoes = permissoesStr.Split(",").Select(x => long.Parse(x)).ToList();
 
         if (!_permissoes.Any(x => permissoes.Contains(x)))
         {
